@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results - Rainfall Prediction AI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cloud-rain"></i>
+                    <h1>Rainfall Prediction Results</h1>
+                </div>
+                <a href="/" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Prediction
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- Prediction Result -->
+            <div class="card result-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-bar"></i> Prediction Analysis</h2>
+                </div>
+                
+                <div class="result-content">
+                    <!-- Prediction Outcome -->
+                    <div class="prediction-outcome {% if result and result.prediction == 'Rain' %}rain-prediction{% else %}norain-prediction{% endif %}">
+                        <div class="outcome-icon">
+                            {% if result and result.prediction == 'Rain' %}
+                                <i class="fas fa-cloud-showers-heavy"></i>
+                            {% else %}
+                                <i class="fas fa-sun"></i>
+                            {% endif %}
+                        </div>
+                        <div class="outcome-text">
+                            <h3>{{ result.prediction if result else 'No Prediction' }}</h3>
+                            <p>Confidence: {{ result.confidence if result else 'N/A' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Probability Distribution -->
+                    {% if result and result.probability %}
+                    <div class="probability-section">
+                        <h4><i class="fas fa-chart-pie"></i> Probability Distribution</h4>
+                        <div class="probability-bars">
+                            <div class="probability-bar">
+                                <div class="bar-label">
+                                    <span>No Rain</span>
+                                    <span>{{ "%.1f"|format(result.probability[0] * 100) }}%</span>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-fill no-rain-fill" style="width: {{ result.probability[0] * 100 }}%"></div>
+                                </div>
+                            </div>
+                            <div class="probability-bar">
+                                <div class="bar-label">
+                                    <span>Rain</span>
+                                    <span>{{ "%.1f"|format(result.probability[1] * 100) }}%</span>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-fill rain-fill" style="width: {{ result.probability[1] * 100 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Input Summary -->
+                    {% if features %}
+                    <div class="input-summary">
+                        <h4><i class="fas fa-list-ul"></i> Input Parameters</h4>
+                        <div class="parameters-grid">
+                            {% for feature, value in features.items() %}
+                            <div class="parameter-item">
+                                <span class="parameter-name">{{ feature|title }}</span>
+                                <span class="parameter-value">{{ "%.1f"|format(value) }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-redo"></i>
+                    New Prediction
+                </a>
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <i class="fas fa-print"></i>
+                    Print Results
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Rainfall Prediction AI. Built with Flask and Machine Learning.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
