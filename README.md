@@ -163,6 +163,3 @@ If you want, I can also **add a “Quick Start” section with screenshots** of 
 <img width="1292" height="838" alt="image" src="https://github.com/user-attachments/assets/90b82b2a-8118-4234-828b-32b855018fee" />
 
 
-
-Do you want me to do that too?
-```
