@@ -156,10 +156,8 @@ This project is licensed under the MIT License.
 
 ```
 
----
-
-If you want, I can also **add a “Quick Start” section with screenshots** of the web app and results page, so your README looks **more professional on GitHub**.  
 <img width="1223" height="850" alt="image" src="https://github.com/user-attachments/assets/c6b2922a-504c-4896-ad09-cb8f04dae364" />
 <img width="1292" height="838" alt="image" src="https://github.com/user-attachments/assets/90b82b2a-8118-4234-828b-32b855018fee" />
+
 
 
