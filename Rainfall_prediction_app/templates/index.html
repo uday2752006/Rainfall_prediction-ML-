@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Rainfall Prediction Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-cloud-rain"></i>
+            <span>Rainfall Prediction</span>
+        </div>
+        <div class="nav-links">
+            <span class="welcome">Welcome, {{ username }}!</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="model-status">
+            <div class="status-indicator {{ 'status-loaded' if model_status.startswith('✅') else 'status-demo' }}">
+                <i class="fas {{ 'fa-check-circle' if model_status.startswith('✅') else 'fa-exclamation-triangle' }}"></i>
+                {{ model_status }} {{ feature_info }}
+            </div>
+        </div>
+
+        <div class="prediction-card">
+            <div class="card-header">
+                <h2><i class="fas fa-cloud-sun-rain"></i> Rainfall Prediction</h2>
+                <p>Enter all 12 weather parameters to predict rainfall probability</p>
+            </div>
+
+            <form id="prediction-form" class="prediction-form">
+                <div class="form-grid">
+                    {% for feature in feature_names %}
+                    <div class="form-group">
+                        <label for="{{ feature }}">
+                            <i class="fas fa-{{ get_feature_icon(feature) }}"></i> 
+                            {{ feature.replace('_', ' ').title() }}
+                            ({{ get_feature_units(feature) }})
+                        </label>
+                        <input type="number" id="{{ feature }}" name="{{ feature }}" step="0.1" required 
+                               value="{{ get_default_value(feature) }}"
+                               placeholder="Enter {{ get_feature_units(feature) }}">
+                        <small class="feature-help">{{ get_feature_description(feature) }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="predict-btn">
+                    <i class="fas fa-bolt"></i> Predict Rainfall
+                </button>
+            </form>
+
+            <div id="result" class="result-container" style="display: none;">
+                <div class="result-card">
+                    <h3><i class="fas fa-chart-bar"></i> Prediction Result</h3>
+                    <div id="prediction-text" class="prediction-text"></div>
+                    <div id="confidence" class="confidence"></div>
+                    <div class="result-features">
+                        <h4><i class="fas fa-list"></i> Input Features:</h4>
+                        <div id="features-list" class="features-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
